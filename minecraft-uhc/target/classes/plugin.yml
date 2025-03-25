@@ -1,0 +1,7 @@
+main: com.sogliuzzo.Main
+name: Minecraft-UHC
+description: A Minecraft plugin for playing UHC
+version: 2025w13a
+authors: [19h, 24h]
+website: https://github.com/SogliuzzoL/Minecraft-UHC
+prefix: UHC
