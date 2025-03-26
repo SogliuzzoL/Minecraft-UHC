@@ -7,7 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.sogliuzzo.Main;
 
@@ -21,19 +20,19 @@ public class StartCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Bukkit.getLogger().log(Level.INFO ,"Starting the game.");
+        main.broadcastMessage("Starting a new game !");
         main.time = 0;
-        BukkitRunnable bukkitRunnable = new BukkitRunnable() {
+        if (main.gameRunnable != null)
+            main.gameRunnable.cancel();
+        main.gameRunnable = new BukkitRunnable() {
 
             @Override
             public void run() {
                 main.time++;
-                Bukkit.getLogger().log(Level.INFO, "" + main.time);
             }
 
         };
-
-        bukkitRunnable.runTaskTimer(main, 0, 20);
+        main.gameRunnable.runTaskTimer(main, 0, 20);
         return true;
     }
 
