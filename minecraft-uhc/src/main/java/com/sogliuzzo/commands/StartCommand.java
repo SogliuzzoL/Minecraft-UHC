@@ -12,7 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.sogliuzzo.Main;
-import com.sogliuzzo.utils.CustomWorldGenerator;
+import com.sogliuzzo.world.CustomWorldGenerator;
 
 public class StartCommand implements CommandExecutor {
 
