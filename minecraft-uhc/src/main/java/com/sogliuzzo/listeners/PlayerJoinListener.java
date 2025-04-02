@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.sogliuzzo.Main;
+import com.sogliuzzo.utils.GameStates;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -20,6 +21,9 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage(ChatColor.GREEN + "+ " + ChatColor.GRAY + event.getPlayer().getName());
-        event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 0, 100, 0));
+        if (main.gameState == GameStates.STARTED)
+            event.getPlayer().teleport(new Location(Bukkit.getWorld("uhc_world"), 0, 100, 0));
+        else
+            event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 0, 100, 0));
     }
 }

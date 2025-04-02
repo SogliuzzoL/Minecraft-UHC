@@ -12,14 +12,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.sogliuzzo.commands.StartCommand;
 import com.sogliuzzo.listeners.PlayerJoinListener;
+import com.sogliuzzo.utils.GameStates;
 
 public class Main extends JavaPlugin {
     public int time = 0;
     public BukkitRunnable gameRunnable;
     public World world;
+    public GameStates gameState;
 
     @Override
     public void onEnable() {
+        gameState = GameStates.WAITING;
         // Register Commands
         getCommand("start").setExecutor(new StartCommand(this));
         // Register Events
@@ -31,6 +34,7 @@ public class Main extends JavaPlugin {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.teleport(new Location(Bukkit.getWorld("world"), 0, 100, 0));
         }
+        Bukkit.getServer().unloadWorld(Bukkit.getWorld("uhc_world"), false);
     }
 
     public void broadcastMessage(String msg) {

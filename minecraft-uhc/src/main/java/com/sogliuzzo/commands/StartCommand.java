@@ -12,6 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.sogliuzzo.Main;
+import com.sogliuzzo.utils.GameStates;
 import com.sogliuzzo.world.CustomWorldGenerator;
 
 public class StartCommand implements CommandExecutor {
@@ -24,6 +25,8 @@ public class StartCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        main.broadcastMessage("Starting a new game !");
+        main.gameState = GameStates.STARTING;
         // Création d'un nouveau monde
         main.deleteWorld("uhc_world");
         WorldCreator worldCreator = new WorldCreator("uhc_world");
@@ -40,8 +43,8 @@ public class StartCommand implements CommandExecutor {
             player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10, 255));
         }
 
-        main.broadcastMessage("Starting a new game !");
         main.time = 0;
+        main.gameState = GameStates.STARTED;
         if (main.gameRunnable != null)
             main.gameRunnable.cancel();
         main.gameRunnable = new BukkitRunnable() {
