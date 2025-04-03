@@ -25,7 +25,7 @@ public class StartCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        main.broadcastMessage("Starting a new game !");
+        main.broadcastMessage("A new game is starting!");
         main.gameState = GameStates.STARTING;
         // Création d'un nouveau monde
         main.deleteWorld("uhc_world");
@@ -44,6 +44,7 @@ public class StartCommand implements CommandExecutor {
         }
 
         main.time = 0;
+        main.world.getWorldBorder().setSize(main.borderStartSize);
         main.gameState = GameStates.STARTED;
         if (main.gameRunnable != null)
             main.gameRunnable.cancel();
@@ -52,6 +53,15 @@ public class StartCommand implements CommandExecutor {
             @Override
             public void run() {
                 main.time++;
+                // Gestion de la border
+                if (main.time == main.borderStartTime) {
+                    main.gameState = GameStates.BORDER;
+                    main.world.getWorldBorder().setSize(main.borderEndSize, main.borderEndTime - main.borderStartTime);
+                    main.broadcastMessage("The border is closing in!");
+                } else if (main.time == main.borderEndTime) {
+                    main.gameState = GameStates.MEETUP;
+                    main.broadcastMessage("The border has reached its final size!");
+                }
             }
 
         };

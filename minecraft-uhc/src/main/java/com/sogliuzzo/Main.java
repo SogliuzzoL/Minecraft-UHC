@@ -20,6 +20,11 @@ public class Main extends JavaPlugin {
     public World world;
     public GameStates gameState;
 
+    public int borderStartTime = 60 * 60; // 1h
+    public int borderEndTime = 60 * (60 + 15); // 1h15
+    public int borderStartSize = 1000;
+    public int borderEndSize = 100;
+
     @Override
     public void onEnable() {
         gameState = GameStates.WAITING;
