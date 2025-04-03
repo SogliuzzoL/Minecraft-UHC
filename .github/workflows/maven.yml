@@ -1,31 +1,43 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Java CI with Maven
+name: Build and Release JAR
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 8
-      uses: actions/setup-java@v4
-      with:
-        java-version: '8'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      run: cd minecraft-uhc/ && mvn -B package --file pom.xml
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+
+      - name: Build with Maven
+        run: |
+          cd minecraft-uhc/
+          mvn clean package
+
+      - name: Get version from pom.xml
+        id: version
+        run: |
+          cd minecraft-uhc/
+          echo "VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
+          body: "Automatic release of version ${{ env.VERSION }}"
+          draft: false
+          prerelease: false
+          files: minecraft-uhc/target/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
