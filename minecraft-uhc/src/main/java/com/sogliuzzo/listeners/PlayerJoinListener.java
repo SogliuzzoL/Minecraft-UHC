@@ -1,6 +1,7 @@
 package com.sogliuzzo.listeners;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -21,9 +22,10 @@ public class PlayerJoinListener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         event.setJoinMessage(ChatColor.GREEN + "+ " + ChatColor.GRAY + event.getPlayer().getName());
-        if (main.gameState == GameStates.STARTED)
-            event.getPlayer().teleport(new Location(Bukkit.getWorld("uhc_world"), 0, 100, 0));
-        else
+        if (main.gameState == GameStates.WAITING || main.gameState == GameStates.STARTING) {
             event.getPlayer().teleport(new Location(Bukkit.getWorld("world"), 0, 100, 0));
+        } else {
+            event.getPlayer().setGameMode(GameMode.SPECTATOR);
+        }
     }
 }
