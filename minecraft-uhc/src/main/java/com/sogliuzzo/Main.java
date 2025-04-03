@@ -11,6 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.sogliuzzo.commands.StartCommand;
+import com.sogliuzzo.listeners.EntityDamageByEntityListener;
+import com.sogliuzzo.listeners.EntityDamageListener;
 import com.sogliuzzo.listeners.PlayerJoinListener;
 import com.sogliuzzo.utils.GameStates;
 
@@ -20,10 +22,16 @@ public class Main extends JavaPlugin {
     public World world;
     public GameStates gameState;
 
+    // Border Settings
     public int borderStartTime = 60 * 60; // 1h
     public int borderEndTime = 60 * (60 + 15); // 1h15
-    public int borderStartSize = 1000;
-    public int borderEndSize = 100;
+    public int borderStartSize = 1000; // -500 à 500
+    public int borderEndSize = 100; // -50 à 50
+
+    // FinalHeal and PvP
+    public int finalHealTime = 60 * 15; // 15 min
+    public int pvpTime = 60 * 20; // 20 min
+    public int invincibleTime = 60; // 1 min
 
     @Override
     public void onEnable() {
@@ -32,6 +40,8 @@ public class Main extends JavaPlugin {
         getCommand("start").setExecutor(new StartCommand(this));
         // Register Events
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageListener(this), this);
+        getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(this), this);
     }
 
     @Override
