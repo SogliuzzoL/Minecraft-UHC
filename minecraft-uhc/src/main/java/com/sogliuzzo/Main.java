@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.sogliuzzo.commands.StartCommand;
+import com.sogliuzzo.listeners.BlockBreakListener;
 import com.sogliuzzo.listeners.EntityDamageByEntityListener;
 import com.sogliuzzo.listeners.EntityDamageListener;
 import com.sogliuzzo.listeners.PlayerJoinListener;
@@ -42,6 +43,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
         getServer().getPluginManager().registerEvents(new EntityDamageListener(this), this);
         getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(this), this);
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(this), this);
     }
 
     @Override
