@@ -6,11 +6,18 @@ authors: [19h, 24h]
 website: https://github.com/SogliuzzoL/Minecraft-UHC
 prefix: UHC
 permissions:
-  host:
+  uhc.start:
+    description: Host permissions
+    default: op
+  uhc.pregen:
     description: Host permissions
     default: op
 commands:
   start:
     description: Starts a UHC
-    permission: host
+    permission: uhc.start
     usage: "Usage: /start"
+  pregen:
+    description: Generates the map for the UHC
+    permission: uhc.pregen
+    usage: "Usage: /pregen"
