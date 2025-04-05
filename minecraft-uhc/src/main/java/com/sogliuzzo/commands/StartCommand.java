@@ -6,7 +6,6 @@ import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,7 +14,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.sogliuzzo.Main;
 import com.sogliuzzo.utils.GameStates;
-import com.sogliuzzo.world.CustomWorldGenerator;
 
 public class StartCommand implements CommandExecutor {
 
@@ -27,21 +25,12 @@ public class StartCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        main.broadcastMessage("A new game is starting and a new map is being generated!");
+        if (main.gameState == GameStates.WAITING) {
+            sender.sendMessage(main.prefix + "Pregenerate the world before starting the game.");
+            return true;
+        }
+        main.broadcastMessage("A new game is starting!");
         main.gameState = GameStates.STARTING;
-
-        // Création d'un nouveau monde
-        main.deleteWorld("uhc_world");
-        WorldCreator worldCreator = new WorldCreator("uhc_world");
-        worldCreator.generator(new CustomWorldGenerator());
-        main.world = main.getServer().createWorld(worldCreator);
-
-        // Paramètres du monde
-        main.world.setDifficulty(org.bukkit.Difficulty.HARD);
-        main.world.setGameRuleValue("doDaylightCycle", "false");
-        main.world.setTime(0);
-        main.world.setGameRuleValue("naturalRegeneration", "false");
-        main.world.setKeepSpawnInMemory(false);
 
         // Téléportation des joueurs
         main.broadcastMessage("Map successfully generated and players are being teleported!");
